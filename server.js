@@ -5,18 +5,25 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose')
 
+const billRouter = require('./routers/bill-router');
+const productRouter = require('./routers/product-router');
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//connect database
+//connect database =============================================
 mongoose.connect(process.env.DB_LOCAL || process.env.DB_HOST,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
     .then(() => console.log('Database connected!'))
-    .catch(err => console.log('ERROR! : ',err));
+    .catch(err => console.log('ERROR! : ', err));
+
+
+app.use('/api/bill', billRouter);
+app.use('/api/product', productRouter);
 
 app.get('/', function (req, res) {
     res.json('welcome to backend cuahang7ty')
